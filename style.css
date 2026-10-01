@@ -1,0 +1,1010 @@
+/* Fonts for the Vampire style (falls back to your theme's serif / cursive fonts if offline) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&display=swap');
+
+/* Every color, font and shape here comes from SillyTavern's own theme variables
+   (plus Moonlit Echoes' accent color when present), so the row restyles itself
+   whenever you switch or edit a theme. */
+
+/* Colors: a theme chosen in the extension's Themes section (--wf-theme-*) wins;
+   otherwise everything follows SillyTavern / Moonlit Echoes. */
+.wf-wrap,
+.wf-menu {
+    --wf-accent: var(--wf-theme-accent, var(--customThemeColor, var(--SmartThemeQuoteColor, currentColor)));
+    --wf-border: var(--wf-theme-border, var(--SmartThemeBorderColor, currentColor));
+    --wf-text: var(--wf-theme-text, var(--SmartThemeBodyColor, #dddddd));
+    --wf-title: var(--wf-theme-title, var(--wf-accent));
+    --wf-accent2: var(--wf-theme-accent2, var(--wf-title));
+}
+
+.wf-wrap {
+    --wf-s: 1; /* icon size multiplier, set from the settings */
+    display: block;
+    text-align: left;
+    width: 100%;
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    margin: 4px 0 18px;
+    font-family: inherit;
+    color: var(--wf-text);
+}
+
+/* ---------- Title ---------- */
+.wf-title {
+    /* inherits the "Recent Chats" font, size and weight from the theme;
+       colored with the theme's accent instead of plain white */
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0 0 6px;
+    color: var(--wf-title);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--wf-title) 45%, transparent);
+    white-space: nowrap;
+}
+
+.wf-title-deco {
+    opacity: 0.75;
+    font-weight: normal;
+}
+
+.wf-title-word {
+    /* a soft blend from the accent into the theme's text color */
+    background: linear-gradient(90deg, var(--wf-title), color-mix(in srgb, var(--wf-title) 55%, var(--wf-text)), var(--wf-title));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.wf-title-heart {
+    display: inline-block;
+    margin: 0 0.1em;
+}
+
+/* the little heart beats along with the glow when Heartbeat is on */
+.wf-heartbeat .wf-title-heart {
+    animation: wf-title-beat var(--wf-beat-dur) ease-in-out infinite;
+}
+
+@keyframes wf-title-beat {
+    0%, 45%, 100% { transform: scale(1); }
+    10% { transform: scale(1.25); }
+    20% { transform: scale(1); }
+    30% { transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wf-heartbeat .wf-title-heart { animation: none; }
+}
+
+/* ---------- Row ---------- */
+.wf-row {
+    display: flex;
+    gap: calc(var(--wf-s) * 12px);
+    overflow-x: auto;
+    padding: 14px 12px 10px; /* room so glows and hover zoom aren't cut off */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--wf-border) transparent;
+}
+
+/* center the row when everything fits; still scrolls normally when it doesn't */
+.wf-row > .wf-card:first-child { margin-left: auto; }
+.wf-row > .wf-card:last-child { margin-right: auto; }
+
+.wf-card {
+    -webkit-tap-highlight-color: transparent;
+    --wf-w: 88px; /* base width, per shape */
+    --wf-h: 124px; /* base height, per shape */
+    flex: 0 0 auto;
+    width: calc(var(--wf-s) * var(--wf-w));
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+    cursor: pointer;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none; /* no "save image" popup on long-press */
+}
+
+.wf-frame {
+    position: relative;
+    display: block;
+    line-height: 0;
+}
+
+.wf-media {
+    display: block;
+    width: calc(var(--wf-s) * var(--wf-w));
+    height: calc(var(--wf-s) * var(--wf-h));
+    object-fit: cover;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid var(--wf-border);
+    box-shadow: 0 2px 10px var(--SmartThemeShadowColor, rgba(0, 0, 0, 0.5));
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+}
+
+.wf-card:focus-visible .wf-media,
+.wf-card:active .wf-media {
+    transform: scale(1.04);
+    border-color: var(--wf-accent);
+    box-shadow: 0 0 12px var(--wf-accent);
+}
+
+.wf-card:focus-visible {
+    outline: none;
+}
+
+.wf-name,
+.wf-info {
+    max-width: calc(var(--wf-s) * var(--wf-w));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+}
+
+.wf-name {
+    font-size: 0.8em;
+    color: var(--wf-text);
+}
+
+.wf-info {
+    font-size: 0.68em;
+    opacity: 0.7;
+    min-height: 1.25em;
+    margin-top: -2px;
+    /* count and time can wrap onto two short lines instead of being cut off */
+    white-space: normal;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* ---------- Groups ---------- */
+.wf-collage {
+    display: grid;
+    gap: 1px;
+    background: var(--wf-border);
+}
+.wf-collage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-width: 0;
+    min-height: 0;
+}
+.wf-collage-1 { grid-template: 1fr / 1fr; }
+.wf-collage-2 { grid-template: 1fr / 1fr 1fr; }
+.wf-collage-3 { grid-template: 1fr 1fr / 1fr 1fr; }
+.wf-collage-3 img:first-child { grid-row: span 2; }
+.wf-collage-4 { grid-template: 1fr 1fr / 1fr 1fr; }
+
+.wf-badge {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    line-height: 1;
+    color: var(--wf-text);
+    background: var(--SmartThemeBlurTintColor, rgba(0, 0, 0, 0.6));
+    border: 1px solid var(--wf-accent);
+    pointer-events: none;
+}
+
+/* ---------- Shapes ---------- */
+.wf-shape-card .wf-card { --wf-w: 88px; --wf-h: 124px; }
+.wf-shape-card .wf-media { border-radius: var(--avatar-base-border-radius, 12px); }
+
+.wf-shape-square .wf-card { --wf-w: 96px; --wf-h: 96px; }
+.wf-shape-square .wf-media { border-radius: 16px; }
+
+.wf-shape-circle .wf-card { --wf-w: 96px; --wf-h: 96px; }
+.wf-shape-circle .wf-media { border-radius: 50%; }
+.wf-shape-circle .wf-badge { right: 2px; bottom: 2px; }
+
+/* Hexagon: the picture is clipped, so its outline comes from drop-shadows on the frame */
+.wf-shape-hexagon .wf-card { --wf-w: 96px; --wf-h: 104px; }
+.wf-shape-hexagon .wf-media { clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+.wf-shape-hexagon .wf-badge { right: 4px; bottom: 10px; }
+
+.wf-shape-hexagon .wf-frame {
+    filter: drop-shadow(0 0 1px var(--wf-border)) drop-shadow(0 0 1px var(--wf-border));
+    transition: filter 0.15s ease;
+}
+.wf-shape-hexagon .wf-media {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+.wf-shape-hexagon .wf-card:focus-visible .wf-media,
+.wf-shape-hexagon .wf-card:active .wf-media {
+    box-shadow: none;
+}
+.wf-shape-hexagon .wf-card:focus-visible .wf-frame,
+.wf-shape-hexagon .wf-card:active .wf-frame {
+    filter: drop-shadow(0 0 2px var(--wf-accent)) drop-shadow(0 0 6px var(--wf-accent));
+}
+
+/* ---------- Heartbeat glow ---------- */
+/* A "lub-dub" glow in the theme's accent color. It's a drop-shadow on the frame,
+   so it follows every shape (hexagon, circle…). Speed and strength come from the settings. */
+.wf-wrap {
+    --wf-beat-dur: 1.8s;
+    --wf-beat-rest: 2px;
+    --wf-beat-peak: 9px;
+}
+
+@keyframes wf-heartbeat {
+    0%   { filter: drop-shadow(0 0 1px var(--wf-accent)) drop-shadow(0 0 var(--wf-beat-rest) var(--wf-accent)); }
+    10%  { filter: drop-shadow(0 0 2px var(--wf-accent)) drop-shadow(0 0 var(--wf-beat-peak) var(--wf-accent)); }
+    20%  { filter: drop-shadow(0 0 1px var(--wf-accent)) drop-shadow(0 0 var(--wf-beat-rest) var(--wf-accent)); }
+    30%  { filter: drop-shadow(0 0 2px var(--wf-accent)) drop-shadow(0 0 calc(var(--wf-beat-peak) * 0.75) var(--wf-accent)); }
+    45%,
+    100% { filter: drop-shadow(0 0 1px var(--wf-accent)) drop-shadow(0 0 var(--wf-beat-rest) var(--wf-accent)); }
+}
+
+.wf-heartbeat .wf-frame {
+    animation: wf-heartbeat var(--wf-beat-dur) ease-in-out infinite;
+}
+
+/* Soft static glow for people who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+    .wf-heartbeat .wf-frame {
+        animation: none;
+        filter: drop-shadow(0 0 1px var(--wf-accent)) drop-shadow(0 0 var(--wf-beat-peak) var(--wf-accent));
+    }
+}
+
+/* ---------- Scroll arrows ---------- */
+.wf-scroller {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wf-scroller .wf-row {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wf-arrow {
+    display: none; /* hidden unless the row overflows */
+    flex: 0 0 auto;
+    align-self: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--wf-border);
+    background: var(--SmartThemeBlurTintColor, rgba(0, 0, 0, 0.4));
+    color: var(--wf-text);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.wf-scroller.wf-has-overflow .wf-arrow {
+    display: flex;
+}
+
+.wf-arrow:active {
+    border-color: var(--wf-accent);
+    color: var(--wf-accent);
+}
+
+/* ---------- Long-press menu ---------- */
+.wf-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 200px;
+    max-width: calc(100vw - 16px);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--wf-border);
+    background: var(--SmartThemeBlurTintColor, rgba(20, 20, 24, 0.95));
+    backdrop-filter: blur(var(--SmartThemeBlurStrength, 10px));
+    -webkit-backdrop-filter: blur(var(--SmartThemeBlurStrength, 10px));
+    box-shadow: 0 6px 24px var(--SmartThemeShadowColor, rgba(0, 0, 0, 0.6));
+    color: var(--wf-text);
+    font-family: var(--mainFontFamily, inherit);
+    font-size: var(--mainFontSize, 15px);
+}
+
+.wf-menu-title {
+    padding: 6px 10px 8px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--wf-border);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wf-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.wf-menu-item i {
+    color: var(--customThemeColor, var(--SmartThemeQuoteColor, currentColor));
+}
+
+.wf-menu-item:active,
+.wf-menu-item:focus-visible {
+    background: color-mix(in srgb, var(--wf-text) 10%, transparent);
+    outline: none;
+}
+
+/* ---------- "Recent Chats" title + shortcut buttons ---------- */
+/* Title centered in place. The Favorites row lives inside it. */
+.wf-center-heading {
+    text-align: center;
+    width: 100%;
+}
+
+/* Title (with Favorites) takes the full width; Docs / GitHub / Discord /
+   Temporary Chat wrap onto their own centered line below "Recent Chats". */
+.welcomeHeader.wf-header-has-favs {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.welcomeHeader.wf-header-has-favs .recentChatsTitle {
+    flex: 1 1 100%;
+}
+
+.welcomeHeader.wf-header-has-favs .welcomeShortcuts {
+    flex: 1 1 100%;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+/* ---------- Extensions panel ---------- */
+.wf-settings .wf-settings-section {
+    margin: 12px 0 4px;
+    padding-bottom: 4px;
+    font-weight: 600;
+    opacity: 0.85;
+    border-bottom: 1px solid var(--SmartThemeBorderColor, currentColor);
+}
+
+.wf-settings .wf-settings-section:first-child {
+    margin-top: 4px;
+}
+
+.wf-settings .wf-settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 6px 0;
+}
+
+.wf-settings .wf-settings-row select {
+    width: auto;
+    min-width: 50%;
+    margin: 0;
+}
+
+.wf-settings .wf-settings-row.wf-dim {
+    opacity: 0.45;
+}
+
+/* ---------- Mouse hover (desktop only, so taps on phones don't leave a stuck glow) ---------- */
+@media (hover: hover) and (pointer: fine) {
+    .wf-card:hover .wf-media {
+        transform: scale(1.04);
+        border-color: var(--wf-accent);
+        box-shadow: 0 0 12px var(--wf-accent);
+    }
+    .wf-shape-hexagon .wf-card:hover .wf-media {
+        box-shadow: none;
+    }
+    .wf-shape-hexagon .wf-card:hover .wf-frame {
+        filter: drop-shadow(0 0 2px var(--wf-accent)) drop-shadow(0 0 6px var(--wf-accent));
+    }
+    .wf-arrow:hover {
+        border-color: var(--wf-accent);
+        color: var(--wf-accent);
+    }
+    .wf-menu-item:hover {
+        background: color-mix(in srgb, var(--wf-text) 10%, transparent);
+    }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 600px) {
+    /* a touch smaller so more bots fit on screen */
+    .wf-wrap {
+        --wf-phone: 0.88;
+    }
+    .wf-card {
+        width: calc(var(--wf-s) * var(--wf-phone, 1) * var(--wf-w));
+    }
+    .wf-media {
+        width: calc(var(--wf-s) * var(--wf-phone, 1) * var(--wf-w));
+        height: calc(var(--wf-s) * var(--wf-phone, 1) * var(--wf-h));
+    }
+    .wf-name,
+    .wf-info {
+        max-width: calc(var(--wf-s) * var(--wf-phone, 1) * var(--wf-w));
+    }
+    .wf-row {
+        gap: 10px;
+        padding: 12px 6px 8px;
+        scroll-padding-left: 6px;
+    }
+    /* smaller arrows so they don't eat the row; swiping works too */
+    .wf-scroller {
+        gap: 2px;
+    }
+    .wf-arrow {
+        width: 26px;
+        height: 26px;
+        font-size: 0.7em;
+    }
+    /* bigger, easier-to-tap menu buttons */
+    .wf-menu {
+        min-width: 220px;
+    }
+    .wf-menu-item {
+        min-height: 44px;
+        padding: 10px 12px;
+    }
+    /* settings: dropdown drops under its label when the panel is narrow */
+    .wf-settings .wf-settings-row {
+        flex-wrap: wrap;
+    }
+    .wf-settings .wf-settings-row select {
+        flex: 1 1 55%;
+    }
+}
+
+/* ---------- Settings: on/off switches ---------- */
+.wf-settings .wf-switch {
+    --wf-sw-on: var(--wf-theme-accent, var(--customThemeColor, var(--SmartThemeQuoteColor, #7aa7ff)));
+    position: relative;
+    flex: 0 0 auto;
+    width: 44px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    border-radius: 999px;
+    border: 1px solid var(--SmartThemeBorderColor, #555);
+    background: color-mix(in srgb, var(--SmartThemeBodyColor, #fff) 12%, transparent);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wf-settings .wf-switch .wf-switch-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--SmartThemeBodyColor, #ddd);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease;
+}
+
+.wf-settings .wf-switch[aria-checked="true"] {
+    background: var(--wf-sw-on);
+    border-color: var(--wf-sw-on);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--wf-sw-on) 50%, transparent);
+}
+
+.wf-settings .wf-switch[aria-checked="true"] .wf-switch-knob {
+    transform: translateX(20px);
+    background: #fff;
+}
+
+.wf-settings .wf-switch:focus-visible {
+    outline: 2px solid var(--wf-sw-on);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wf-settings .wf-switch,
+    .wf-settings .wf-switch .wf-switch-knob {
+        transition: none;
+    }
+}
+
+/* =====================================================================
+   VAMPIRE STYLE
+   Ornate serif title, crowns, glowing gradient rings, corner whispers
+   and a footer. All colors come from the theme (--wf-accent, --wf-accent2,
+   --wf-title, --wf-text), so any color theme can use this style.
+   ===================================================================== */
+.wf-style-vampire {
+    --wf-serif: 'Cormorant Garamond', 'Cormorant', Garamond, 'Times New Roman', serif;
+    --wf-script: 'Pinyon Script', 'Great Vibes', 'Snell Roundhand', cursive;
+    position: relative;
+    isolation: isolate;
+    container-type: inline-size;
+    padding: 6px 0 4px;
+    margin-bottom: 22px;
+}
+
+/* soft candlelight behind the whole block */
+.wf-style-vampire::before {
+    content: '';
+    position: absolute;
+    inset: -4px 0;
+    z-index: -1;
+    border-radius: 18px;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 45% 60% at 18% 45%, color-mix(in srgb, var(--wf-accent2) 13%, transparent), transparent 70%),
+        radial-gradient(ellipse 45% 60% at 82% 55%, color-mix(in srgb, var(--wf-accent) 13%, transparent), transparent 70%);
+}
+
+/* ---- title ---- */
+.wf-style-vampire .wf-v-title-block {
+    margin: 0 0 4px;
+    text-shadow: none;
+    white-space: normal;
+}
+
+.wf-v-title {
+    font-family: var(--wf-serif);
+    font-weight: 500;
+    font-size: calc(var(--mainFontSize, 16px) * 2.7);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    padding: 0 0.1em;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--wf-title) 70%, #fff) 10%, var(--wf-title) 55%, var(--wf-accent2) 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--wf-accent) 45%, transparent));
+}
+
+.wf-v-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: var(--wf-title);
+    font-size: calc(var(--mainFontSize, 16px) * 0.85);
+    line-height: 1;
+    font-weight: normal;
+}
+
+.wf-v-divider::before,
+.wf-v-divider::after {
+    content: '';
+    height: 1px;
+    width: min(26%, 190px);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--wf-title) 75%, transparent));
+}
+
+.wf-v-divider::after {
+    background: linear-gradient(270deg, transparent, color-mix(in srgb, var(--wf-title) 75%, transparent));
+}
+
+.wf-v-gem {
+    font-size: 0.55em;
+    opacity: 0.8;
+}
+
+.wf-v-fleur {
+    font-size: 1.35em;
+    color: var(--wf-accent2);
+    filter: drop-shadow(0 0 4px var(--wf-accent2));
+}
+
+.wf-v-divider-top {
+    margin-bottom: 2px;
+}
+
+.wf-v-divider-bottom {
+    margin-top: 4px;
+}
+
+.wf-v-heart {
+    display: inline-block;
+    font-size: 1.15em;
+    color: var(--wf-accent2);
+    filter: drop-shadow(0 0 5px var(--wf-accent2));
+}
+
+/* ---- portraits: glowing gradient ring + crown (works with every Icon shape) ---- */
+/* ring corner radius per shape (radius of the picture + ring thickness) */
+.wf-style-vampire { --wf-ring: 3px; }
+.wf-style-vampire.wf-shape-card { --wf-ring-r: calc(var(--avatar-base-border-radius, 12px) + var(--wf-ring)); }
+.wf-style-vampire.wf-shape-square { --wf-ring-r: calc(16px + var(--wf-ring)); }
+.wf-style-vampire.wf-shape-circle { --wf-ring-r: 50%; }
+.wf-style-vampire.wf-shape-circle .wf-card { --wf-w: 104px; --wf-h: 104px; }
+
+.wf-style-vampire .wf-row {
+    gap: calc(var(--wf-s) * 18px);
+    padding-top: calc(var(--wf-s) * 34px);
+    padding-bottom: 12px;
+}
+
+.wf-style-vampire .wf-ring {
+    padding: var(--wf-ring);
+    border-radius: var(--wf-ring-r);
+    background: conic-gradient(from 210deg, var(--wf-accent2), var(--wf-accent), var(--wf-title), var(--wf-accent2));
+}
+
+.wf-style-vampire .wf-frame {
+    border-radius: var(--wf-ring-r);
+    box-shadow:
+        0 0 10px color-mix(in srgb, var(--wf-accent) 65%, transparent),
+        0 0 26px color-mix(in srgb, var(--wf-accent2) 35%, transparent);
+}
+
+.wf-style-vampire .wf-media {
+    border: 2px solid rgba(0, 0, 0, 0.55);
+    box-shadow: none;
+}
+
+/* hexagon: the ring is clipped to a hexagon too, and the glow follows the outline */
+.wf-style-vampire.wf-shape-hexagon .wf-ring {
+    border-radius: 0;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.wf-style-vampire.wf-shape-hexagon .wf-frame {
+    box-shadow: none;
+    filter:
+        drop-shadow(0 0 5px color-mix(in srgb, var(--wf-accent) 70%, transparent))
+        drop-shadow(0 0 12px color-mix(in srgb, var(--wf-accent2) 40%, transparent));
+}
+.wf-style-vampire.wf-shape-hexagon .wf-media {
+    border: none;
+}
+.wf-style-vampire.wf-shape-hexagon .wf-v-crown {
+    top: calc(var(--wf-s) * -24px);
+}
+
+.wf-v-crown {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--wf-s) * -26px);
+    width: calc(var(--wf-s) * 36px);
+    height: auto;
+    transform: translateX(-50%);
+    overflow: visible;
+    pointer-events: none;
+    /* rose gold, tinted by the theme's second accent */
+    --wf-crown: var(--wf-theme-crown, color-mix(in srgb, var(--wf-accent2) 28%, #f4c2a4));
+    --wf-crown-hi: color-mix(in srgb, var(--wf-crown) 55%, #fff);
+    filter: drop-shadow(0 0 1.5px color-mix(in srgb, var(--wf-crown) 80%, transparent)) drop-shadow(0 0 6px color-mix(in srgb, var(--wf-accent2) 60%, transparent));
+}
+
+.wf-c-line { fill: none; stroke: var(--wf-crown); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.wf-c-thin { stroke-width: 0.9; stroke: var(--wf-crown-hi); }
+.wf-c-fill { fill: color-mix(in srgb, var(--wf-crown) 30%, transparent); }
+.wf-c-leaf { fill: color-mix(in srgb, var(--wf-crown) 45%, transparent); stroke: var(--wf-crown); stroke-width: 1; stroke-linejoin: round; }
+.wf-c-pearl { fill: var(--wf-crown-hi); }
+.wf-c-gem { fill: var(--wf-accent); stroke: var(--wf-crown-hi); stroke-width: 0.7; }
+.wf-c-gem-soft { fill: color-mix(in srgb, var(--wf-accent) 70%, #fff); }
+
+.wf-style-vampire .wf-name {
+    font-family: var(--wf-serif);
+    font-size: 1.05em;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.wf-style-vampire .wf-info {
+    font-family: var(--wf-serif);
+    font-size: 0.8em;
+    letter-spacing: 0.03em;
+}
+
+.wf-style-vampire .wf-arrow {
+    background: color-mix(in srgb, #000 35%, transparent);
+    border-color: color-mix(in srgb, var(--wf-title) 45%, transparent);
+    color: var(--wf-title);
+}
+
+/* the ring glows brighter on hover instead of the square highlight */
+.wf-style-vampire .wf-card:focus-visible .wf-media,
+.wf-style-vampire .wf-card:active .wf-media {
+    box-shadow: none;
+    border-color: rgba(0, 0, 0, 0.55);
+}
+@media (hover: hover) and (pointer: fine) {
+    .wf-style-vampire .wf-card:hover .wf-media {
+        box-shadow: none;
+        border-color: rgba(0, 0, 0, 0.55);
+    }
+    .wf-style-vampire .wf-card:hover .wf-frame {
+        box-shadow:
+            0 0 14px var(--wf-accent),
+            0 0 34px color-mix(in srgb, var(--wf-accent2) 55%, transparent);
+    }
+    .wf-style-vampire.wf-shape-hexagon .wf-card:hover .wf-frame {
+        box-shadow: none;
+        filter: drop-shadow(0 0 7px var(--wf-accent)) drop-shadow(0 0 16px color-mix(in srgb, var(--wf-accent2) 55%, transparent));
+    }
+}
+
+/* ---- corner whispers ---- */
+.wf-v-corner {
+    position: absolute;
+    top: 14px;
+    color: var(--wf-title);
+    opacity: 0.72;
+    pointer-events: none;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.wf-v-left {
+    left: 3%;
+    font-family: var(--wf-serif);
+    font-size: calc(var(--mainFontSize, 16px) * 0.68);
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    line-height: 2;
+    text-align: center;
+}
+
+.wf-v-left .wf-v-small-heart {
+    letter-spacing: 0;
+    border-top: 1px solid color-mix(in srgb, var(--wf-title) 45%, transparent);
+    margin: 2px auto 0;
+    width: 60%;
+    line-height: 1.6;
+}
+
+.wf-v-right {
+    right: 3%;
+    font-family: var(--wf-script);
+    font-size: calc(var(--mainFontSize, 16px) * 1.25);
+    line-height: 1.25;
+    text-align: right;
+    color: var(--wf-accent2);
+    transform: rotate(-9deg);
+    transform-origin: right top;
+}
+
+.wf-v-right div:nth-child(2) { padding-right: 0.6em; }
+.wf-v-right div:nth-child(3) { padding-right: 0.1em; }
+
+/* ---- footer ---- */
+.wf-v-footer {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--wf-title);
+    font-weight: normal;
+}
+
+.wf-v-heart-outline {
+    font-size: 1.3em;
+    color: var(--wf-accent2);
+}
+
+.wf-v-footer-text {
+    margin-top: 8px;
+    font-family: var(--wf-serif);
+    font-size: calc(var(--mainFontSize, 16px) * 0.68);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    line-height: 2.1;
+    opacity: 0.75;
+}
+
+.wf-v-footer > .wf-v-small-heart {
+    font-size: 0.8em;
+    color: var(--wf-accent2);
+    margin-top: 4px;
+}
+
+/* narrow screens: hide the corner text (not enough room), shrink the title */
+@container (max-width: 760px) {
+    .wf-v-corner {
+        display: none;
+    }
+}
+@media (max-width: 600px) {
+    .wf-v-title {
+        font-size: calc(var(--mainFontSize, 16px) * 2.1);
+    }
+    .wf-v-footer-text {
+        letter-spacing: 0.28em;
+    }
+    .wf-style-vampire .wf-row {
+        gap: 12px;
+    }
+}
+
+/* =====================================================================
+   BLOOD VAMPIRE STYLE
+   Uses everything from the Vampire style (crowns, rings, glow, serif title)
+   with its own layout: star divider + subtitle, brand block top-left,
+   italic line top-right, script footer between long lines, small caps
+   in the bottom corners.
+   ===================================================================== */
+.wf-style-blood::before {
+    background:
+        radial-gradient(ellipse 40% 60% at 12% 40%, color-mix(in srgb, var(--wf-accent) 16%, transparent), transparent 70%),
+        radial-gradient(ellipse 40% 60% at 88% 60%, color-mix(in srgb, var(--wf-accent) 12%, transparent), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% 100%, color-mix(in srgb, var(--wf-accent2) 10%, transparent), transparent 70%);
+}
+
+.wf-style-blood .wf-v-title {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--wf-title) 60%, #fff) 15%, var(--wf-title) 60%, color-mix(in srgb, var(--wf-title) 70%, var(--wf-accent)) 115%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--wf-accent) 40%, transparent));
+}
+
+.wf-b-divider {
+    margin-top: 6px;
+}
+
+.wf-b-divider::before,
+.wf-b-divider::after {
+    width: min(20%, 150px);
+}
+
+.wf-b-star {
+    display: inline-block;
+    font-size: 1.1em;
+    color: color-mix(in srgb, var(--wf-title) 70%, #fff);
+    filter: drop-shadow(0 0 6px var(--wf-accent));
+}
+
+.wf-b-subtitle {
+    margin-top: 12px;
+    font-family: var(--wf-serif);
+    font-size: calc(var(--mainFontSize, 16px) * 0.72);
+    font-weight: 500;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--wf-text);
+    opacity: 0.85;
+}
+
+/* top-left brand block */
+.wf-b-brand {
+    left: 3%;
+    top: 6px;
+    text-align: left;
+    font-family: var(--wf-serif);
+    font-size: calc(var(--mainFontSize, 16px) * 0.6);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    line-height: 2.1;
+    color: var(--wf-text);
+}
+
+.wf-b-brand .wf-b-first {
+    font-size: 1.55em;
+    letter-spacing: 0.45em;
+    opacity: 1;
+    color: var(--wf-title);
+}
+
+/* thin trailing line after the brand name, like the mockup */
+.wf-b-brand .wf-b-first::after {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 4.5em;
+    height: 1px;
+    margin-left: 0.4em;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--wf-title) 70%, transparent), transparent);
+}
+
+/* top-right italic line with a thin rule on its left */
+.wf-b-topright {
+    right: 3%;
+    top: 4px;
+    text-align: left;
+    font-family: var(--wf-serif);
+    font-style: italic;
+    font-size: calc(var(--mainFontSize, 16px) * 0.95);
+    line-height: 1.35;
+    color: var(--wf-text);
+    padding-left: 14px;
+    border-left: 1px solid color-mix(in srgb, var(--wf-title) 35%, transparent);
+    opacity: 0.6;
+}
+
+/* footer: script line between two long rules, then the bottom corners */
+.wf-b-footer {
+    margin-top: 18px;
+    font-weight: normal;
+}
+
+.wf-b-footer-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.wf-b-footer-line::before,
+.wf-b-footer-line::after {
+    content: '';
+    flex: 1 1 0;
+    height: 1px;
+}
+
+.wf-b-footer-line::before {
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--wf-accent) 55%, transparent));
+}
+
+.wf-b-footer-line::after {
+    background: linear-gradient(270deg, transparent, color-mix(in srgb, var(--wf-accent) 55%, transparent));
+}
+
+.wf-b-script {
+    flex: 0 0 auto;
+    font-family: var(--wf-script);
+    font-size: calc(var(--mainFontSize, 16px) * 1.45);
+    line-height: 1.2;
+    color: var(--wf-theme-script, color-mix(in srgb, var(--wf-accent) 65%, var(--wf-title)));
+    white-space: nowrap;
+}
+
+.wf-b-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-top: 18px;
+    padding: 0 3%;
+    font-family: var(--wf-serif);
+    font-size: calc(var(--mainFontSize, 16px) * 0.6);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    line-height: 2.1;
+    color: var(--wf-text);
+    opacity: 0.7;
+}
+
+.wf-b-bottom-left { text-align: left; }
+.wf-b-bottom-right { text-align: right; }
+
+/* narrow screens: corners hide (like Pink Vampire), footer line stays */
+@container (max-width: 760px) {
+    .wf-b-bottom {
+        display: none;
+    }
+}
+@media (max-width: 600px) {
+    .wf-b-subtitle {
+        letter-spacing: 0.25em;
+    }
+    .wf-b-script {
+        font-size: calc(var(--mainFontSize, 16px) * 1.2);
+    }
+}

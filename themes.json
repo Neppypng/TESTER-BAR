@@ -1,0 +1,43 @@
+{
+  "themes": [
+    {
+      "id": "pink-vampire",
+      "name": "Pink Vampire",
+      "style": "vampire",
+      "colors": {
+        "accent": "#b77cf0",
+        "accent2": "#f07ac4",
+        "title": "#ecdcff",
+        "text": "#f1e6f7",
+        "border": "#6e4c80"
+      },
+      "texts": {
+        "left": "Same|Beautiful|Chaos",
+        "right": "danger|looks better|here ♡",
+        "footer": "Favorite people|Darker conversations|A softer you"
+      }
+    },
+    {
+      "id": "dark-blood-vampire",
+      "name": "Dark Blood Vampire",
+      "style": "blood",
+      "colors": {
+        "accent": "#b3405e",
+        "accent2": "#7b3f8a",
+        "title": "#f4eef0",
+        "text": "#e6e0e2",
+        "border": "#4a1624",
+        "crown": "#d9d5da",
+        "script": "#aa7786"
+      },
+      "texts": {
+        "subtitle": "The men you always come back to",
+        "brand": "Noctis|People • Stories • Closer",
+        "topRight": "Obsession|looks good|on you.",
+        "footer": "Same chaos. Different day.",
+        "bottomLeft": "Less people|Deeper connections",
+        "bottomRight": "Favorites|Stay different"
+      }
+    }
+  ]
+}
