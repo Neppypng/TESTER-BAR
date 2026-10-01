@@ -75,4 +75,4 @@ Themes live in `themes.json`. To add one, copy an entry, change it, and upload t
 
 ## Author
 
-Arriana
+NepPNG
