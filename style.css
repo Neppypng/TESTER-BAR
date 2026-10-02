@@ -658,7 +658,8 @@
 .wf-style-vampire .wf-ring {
     padding: var(--wf-ring);
     border-radius: var(--wf-ring-r);
-    background: conic-gradient(from 210deg, var(--wf-accent2), var(--wf-accent), var(--wf-title), var(--wf-accent2));
+    /* the third ring color defaults to the title color; themes can set their own with "ring" */
+    background: conic-gradient(from 210deg, var(--wf-accent2), var(--wf-accent), var(--wf-theme-ring, var(--wf-title)), var(--wf-accent2));
 }
 
 .wf-style-vampire .wf-frame {
@@ -713,6 +714,20 @@
 .wf-c-pearl { fill: var(--wf-crown-hi); }
 .wf-c-gem { fill: var(--wf-accent); stroke: var(--wf-crown-hi); stroke-width: 0.7; }
 .wf-c-gem-soft { fill: color-mix(in srgb, var(--wf-accent) 70%, #fff); }
+
+/* polished silver crown (Dark Blood Vampire) */
+.wf-crown-solid {
+    --wf-s-hi: #ffffff;
+    --wf-s-mid: var(--wf-crown);
+    --wf-s-dark: color-mix(in srgb, var(--wf-crown) 38%, #26232b);
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 5px color-mix(in srgb, var(--wf-crown) 45%, transparent));
+}
+.wf-s-hi { stop-color: var(--wf-s-hi); }
+.wf-s-mid { stop-color: var(--wf-s-mid); }
+.wf-s-dark { stop-color: var(--wf-s-dark); }
+.wf-s-body, .wf-s-band { stroke: var(--wf-s-dark); stroke-width: 0.6; stroke-linejoin: round; }
+.wf-s-orb { stroke: var(--wf-s-dark); stroke-width: 0.4; }
+.wf-s-ridge { fill: none; stroke: #fff; stroke-opacity: 0.55; stroke-width: 0.7; stroke-linecap: round; }
 
 .wf-style-vampire .wf-name {
     font-family: var(--wf-serif);

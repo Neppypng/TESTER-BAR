@@ -67,7 +67,8 @@ Themes live in `themes.json`. To add one, copy an entry, change it, and upload t
   - `classic`: plain look.
   - `vampire` (Pink Vampire layout): ornaments above and below the title, crowns, rings, left and right corner text, stacked caps footer.
   - `blood` (Dark Blood Vampire layout): crowns and rings too, plus a star divider and subtitle, a brand block top-left, an italic line top-right, a script footer between long lines, and small caps in the bottom corners.
-- `colors`: `accent` is the glow and ring, `accent2` the second ring color and crown tint, `title` the heading, `text` names and info, `border` outlines, and `crown` (optional) sets the crown color directly, e.g. `#d9d6e0` for silver, and `script` (optional, blood style) sets the footer script color. Leave one out to use the default.
+- `crownStyle` (optional): `lace` (filigree crown) or `solid` (polished silver-style crown). Pink Vampire's layout uses `lace` by default, Dark Blood Vampire's uses `solid`.
+- `colors`: `accent` is the glow and ring, `accent2` the second ring color and crown tint, `title` the heading, `text` names and info, `border` outlines, and `crown` (optional) sets the crown color directly, e.g. `#d9d6e0` for silver, `script` (optional, blood style) sets the footer script color, and `ring` (optional) sets the ring's highlight color, which defaults to the title color. Leave one out to use the default.
 - `texts`: `|` starts a new line, and an empty `""` hides that piece. Leave a key out to use the default wording.
   - `vampire` keys: `left`, `right`, `footer`.
   - `blood` keys: `subtitle`, `brand` (the first line is the big name), `topRight`, `footer`, `bottomLeft`, `bottomRight`.
@@ -75,4 +76,4 @@ Themes live in `themes.json`. To add one, copy an entry, change it, and upload t
 
 ## Author
 
-NepPNG
+Arriana

@@ -21,14 +21,16 @@
       "id": "dark-blood-vampire",
       "name": "Dark Blood Vampire",
       "style": "blood",
+      "crownStyle": "solid",
       "colors": {
-        "accent": "#b3405e",
-        "accent2": "#7b3f8a",
-        "title": "#f4eef0",
-        "text": "#e6e0e2",
-        "border": "#4a1624",
-        "crown": "#d9d5da",
-        "script": "#aa7786"
+        "accent": "#9e0f1e",
+        "accent2": "#4a0610",
+        "ring": "#c41e2e",
+        "title": "#f1e7e7",
+        "text": "#e4dada",
+        "border": "#3a0910",
+        "crown": "#d4d2d8",
+        "script": "#a8323e"
       },
       "texts": {
         "subtitle": "The men you always come back to",

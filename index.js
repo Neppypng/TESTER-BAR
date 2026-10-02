@@ -362,7 +362,7 @@
         return collage;
     }
 
-    function makeCard(item, settings, style = 'classic') {
+    function makeCard(item, settings, style = 'classic', crownStyle = 'lace') {
         const card = document.createElement('button');
         card.className = `wf-card${item.type === 'group' ? ' wf-group' : ''}`;
         card.title = item.name;
@@ -375,7 +375,7 @@
         ring.className = 'wf-ring';
         ring.append(makeMedia(item));
         frame.append(ring);
-        if (style === 'vampire' || style === 'blood') frame.insertAdjacentHTML('beforeend', CROWN_SVG);
+        if (style === 'vampire' || style === 'blood') frame.insertAdjacentHTML('beforeend', crownStyle === 'solid' ? solidCrownSvg() : CROWN_SVG);
         if (item.type === 'group') {
             const badge = document.createElement('span');
             badge.className = 'wf-badge';
@@ -524,6 +524,42 @@
         <circle class="wf-c-pearl" cx="32" cy="21.8" r="1"/>
         </svg>`;
 
+    // Polished silver crown: five ball-tipped points, shiny band (used by Dark Blood Vampire).
+    // Each copy gets its own gradient ids so every crown renders on its own.
+    let solidCrownCount = 0;
+    const solidCrownSvg = () => {
+        const id = `wfc${++solidCrownCount}`;
+        return `<svg class="wf-v-crown wf-crown-solid" viewBox="0 0 60 40" aria-hidden="true">
+        <defs>
+        <linearGradient id="wfsb-${id}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" class="wf-s-dark"/><stop offset="0.22" class="wf-s-mid"/><stop offset="0.42" class="wf-s-hi"/>
+        <stop offset="0.5" class="wf-s-mid"/><stop offset="0.58" class="wf-s-hi"/><stop offset="0.78" class="wf-s-mid"/><stop offset="1" class="wf-s-dark"/>
+        </linearGradient>
+        <linearGradient id="wfss-${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity="0.55"/><stop offset="0.45" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity="0.28"/>
+        </linearGradient>
+        <linearGradient id="wfsn-${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="wf-s-hi"/><stop offset="0.45" class="wf-s-dark"/><stop offset="0.75" class="wf-s-mid"/><stop offset="1" class="wf-s-dark"/>
+        </linearGradient>
+        <radialGradient id="wfso-${id}" cx="0.35" cy="0.3" r="0.75">
+        <stop offset="0" stop-color="#fff"/><stop offset="0.5" class="wf-s-mid"/><stop offset="1" class="wf-s-dark"/>
+        </radialGradient>
+        </defs>
+        <path class="wf-s-body" fill="url(#wfsb-${id})" d="M9.5 31 L4.5 13.5 L13.5 24.5 L17.5 17 L22 24 L30 6.5 L38 24 L42.5 17 L46.5 24.5 L55.5 13.5 L50.5 31 Z"/>
+        <path fill="url(#wfss-${id})" d="M9.5 31 L4.5 13.5 L13.5 24.5 L17.5 17 L22 24 L30 6.5 L38 24 L42.5 17 L46.5 24.5 L55.5 13.5 L50.5 31 Z"/>
+        <path class="wf-s-ridge" d="M30 8.5 L30 29 M17.5 18.5 L19.5 29 M42.5 18.5 L40.5 29 M6 15.5 L11.5 29 M54 15.5 L48.5 29"/>
+        <path class="wf-s-band" fill="url(#wfsn-${id})" d="M8.5 30.2 Q30 27.6 51.5 30.2 L51.5 36 Q30 33.6 8.5 36 Z"/>
+        <path class="wf-s-ridge" d="M9.5 32.4 Q30 30 50.5 32.4"/>
+        <circle fill="url(#wfso-${id})" class="wf-s-orb" cx="4.6" cy="12.2" r="2.5"/>
+        <circle fill="url(#wfso-${id})" class="wf-s-orb" cx="17.5" cy="15.6" r="1.9"/>
+        <circle fill="url(#wfso-${id})" class="wf-s-orb" cx="30" cy="5.2" r="2.7"/>
+        <circle fill="url(#wfso-${id})" class="wf-s-orb" cx="42.5" cy="15.6" r="1.9"/>
+        <circle fill="url(#wfso-${id})" class="wf-s-orb" cx="55.4" cy="12.2" r="2.5"/>
+        <path fill="url(#wfso-${id})" class="wf-s-orb" d="M30 0.6 L31 2.6 L30 3.2 L29 2.6 Z"/>
+        </svg>`;
+    };
+
     const VAMPIRE_TEXT = {
         left: 'Same|Beautiful|Chaos',
         right: 'danger|looks better|here \u2661',
@@ -617,7 +653,9 @@
 
         const row = document.createElement('div');
         row.className = 'wf-row';
-        for (const item of items) row.append(makeCard(item, settings, style));
+        // crown look: "lace" (filigree) or "solid" (polished); Blood layout defaults to solid
+        const crownStyle = ['lace', 'solid'].includes(theme?.crownStyle) ? theme.crownStyle : style === 'blood' ? 'solid' : 'lace';
+        for (const item of items) row.append(makeCard(item, settings, style, crownStyle));
 
         // Left / right arrows — shown only when the row overflows; they loop around.
         const step = (dir) => {
@@ -733,7 +771,7 @@
             colors: { accent: '#b77cf0', accent2: '#f07ac4', title: '#ecdcff', text: '#f1e6f7', border: '#6e4c80' },
         },
     ];
-    const COLOR_KEYS = ['accent', 'accent2', 'title', 'text', 'border', 'crown', 'script'];
+    const COLOR_KEYS = ['accent', 'accent2', 'title', 'text', 'border', 'crown', 'script', 'ring'];
     const OLD_THEME_IDS = { 'p:vampire': 'pink-vampire', 'blood-vampire': 'dark-blood-vampire' }; // ids used by earlier versions
 
     let THEMES = FALLBACK_THEMES;
@@ -754,6 +792,7 @@
             id: String(t.id),
             name: String(t.name),
             style: STYLES.some(([k]) => k === t.style) ? t.style : 'classic',
+            crownStyle: typeof t.crownStyle === 'string' ? t.crownStyle : undefined,
             colors,
             texts,
         };
