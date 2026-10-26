@@ -40,6 +40,24 @@
         "bottomLeft": "Less people|Deeper connections",
         "bottomRight": "Favorites|Stay different"
       }
+    },
+    {
+      "id": "regency-cameo",
+      "name": "Regency Cameo",
+      "style": "regency",
+      "shape": "cameo",
+      "colors": {
+        "accent": "#e8dcc3",
+        "accent2": "#b8a47f",
+        "title": "#f4eee2",
+        "text": "#e6dfd2",
+        "border": "#6b6152",
+        "rose": "#d8a1ab"
+      },
+      "texts": {
+        "title": "Suitors",
+        "subtitle": "The most eligible of the season"
+      }
     }
   ]
 }

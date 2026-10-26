@@ -5,16 +5,16 @@ A SillyTavern extension that puts your favorite characters and group chats right
 ## Features
 
 - A row of your favorited bots and groups on the welcome screen. Tap one to jump in.
-- Four icon shapes: Card, Rounded square, Circle, Hexagon.
+- Five icon shapes: Card, Rounded square, Circle, Hexagon, Cameo (an oval portrait in an ornate frame).
 - Icon sizes: Small, Medium, Large.
 - Chat count, message count for the current chat, and "last chatted" under each bot.
 - Sorting: favorited order, A–Z, Z–A, recently chatted, or most messages.
-- Heartbeat glow: a soft pulsing glow in your theme's color, with adjustable speed and intensity.
+- Heartbeat glow: a soft pulsing glow around each bot in your theme's color, with adjustable speed and intensity. Only the cards pulse.
 - Long-press (or right-click) menu: open last chat, start a new chat, open the character card, or remove from favorites.
 - Live updates: star or unstar a bot and the row updates on its own.
 - Scroll arrows that loop around when you have lots of favorites.
 - Matches any theme automatically, including Moonlit Echoes.
-- Themes: pick **Auto** to match your SillyTavern colors, or one of the extension's themes, **Pink Vampire** or **Dark Blood Vampire** (ornate title, lacy crowns, glowing rings, corner text and a footer). New themes arrive through extension updates.
+- Themes: pick **Auto** to match your SillyTavern colors, or one of the extension's themes, **Pink Vampire**, **Dark Blood Vampire** or **Regency Cameo** (ornate title, lacy crowns, glowing rings, corner text and a footer). New themes arrive through extension updates.
 
 ## Install
 
@@ -66,11 +66,14 @@ Themes live in `themes.json`. To add one, copy an entry, change it, and upload t
 - `style`: every style works with every Icon shape.
   - `classic`: plain look.
   - `vampire` (Pink Vampire layout): ornaments above and below the title, crowns, rings, left and right corner text, stacked caps footer.
+  - `regency` (Regency Cameo layout): serif title, scroll flourish, italic subtitle, no crowns or rings.
   - `blood` (Dark Blood Vampire layout): crowns and rings too, plus a star divider and subtitle, a brand block top-left, an italic line top-right, a script footer between long lines, and small caps in the bottom corners.
+- `shape` (optional): an Icon shape (`card`, `square`, `circle`, `hexagon`, `cameo`) that gets switched on when someone picks the theme. They can still change it afterwards.
 - `crownStyle` (optional): `lace` (filigree crown) or `solid` (polished silver-style crown). Pink Vampire's layout uses `lace` by default, Dark Blood Vampire's uses `solid`.
-- `colors`: `accent` is the glow and ring, `accent2` the second ring color and crown tint, `title` the heading, `text` names and info, `border` outlines, and `crown` (optional) sets the crown color directly, e.g. `#d9d6e0` for silver, `script` (optional, blood style) sets the footer script color, and `ring` (optional) sets the ring's highlight color, which defaults to the title color. Leave one out to use the default.
-- `texts`: `|` starts a new line, and an empty `""` hides that piece. Leave a key out to use the default wording.
+- `colors`: `accent` is the glow and ring, `accent2` the second ring color and crown tint, `title` the heading, `text` names and info, `border` outlines, and `crown` (optional) sets the crown color directly, e.g. `#d9d6e0` for silver, `script` (optional, blood style) sets the footer script color, and `ring` (optional) sets the ring's highlight color, which defaults to the title color, and `rose` (optional, regency style) sets the petal color of the title roses. Leave one out to use the default.
+- `texts`: `title` (any style except classic) replaces the word "Favorites". `|` starts a new line, and an empty `""` hides that piece. Leave a key out to use the default wording.
   - `vampire` keys: `left`, `right`, `footer`.
+  - `regency` keys: `title`, `subtitle`.
   - `blood` keys: `subtitle`, `brand` (the first line is the big name), `topRight`, `footer`, `bottomLeft`, `bottomRight`.
 - Separate entries with a comma. Check the file at jsonlint.com before uploading.
 

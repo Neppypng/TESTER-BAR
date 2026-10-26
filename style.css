@@ -59,21 +59,8 @@
     margin: 0 0.1em;
 }
 
-/* the little heart beats along with the glow when Heartbeat is on */
-.wf-heartbeat .wf-title-heart {
-    animation: wf-title-beat var(--wf-beat-dur) ease-in-out infinite;
-}
 
-@keyframes wf-title-beat {
-    0%, 45%, 100% { transform: scale(1); }
-    10% { transform: scale(1.25); }
-    20% { transform: scale(1); }
-    30% { transform: scale(1.15); }
-}
 
-@media (prefers-reduced-motion: reduce) {
-    .wf-heartbeat .wf-title-heart { animation: none; }
-}
 
 /* ---------- Row ---------- */
 .wf-row {
@@ -1022,4 +1009,133 @@
     .wf-b-script {
         font-size: calc(var(--mainFontSize, 16px) * 1.2);
     }
+}
+
+/* =====================================================================
+   CAMEO SHAPE  (works with every theme)
+   Oval portrait inside an ornate frame. The frame is drawn in the
+   theme's title color; extra margin keeps the ornaments from overlapping.
+   ===================================================================== */
+.wf-shape-cameo .wf-card {
+    --wf-w: 86px;
+    --wf-h: 114px;
+    width: calc(var(--wf-s) * var(--wf-w) * 1.34);
+}
+.wf-shape-cameo .wf-media { border-radius: 50%; }
+.wf-shape-cameo .wf-name,
+.wf-shape-cameo .wf-info { max-width: calc(var(--wf-s) * var(--wf-w) * 1.34); }
+.wf-shape-cameo .wf-frame {
+    margin: calc(var(--wf-s) * var(--wf-h) * 0.2) 0 calc(var(--wf-s) * var(--wf-h) * 0.19);
+}
+.wf-shape-cameo .wf-badge { right: 4px; bottom: 6px; }
+
+.wf-cameo-frame {
+    position: absolute;
+    left: -16.7%;
+    top: -19.5%;
+    width: 133.4%;
+    height: 139%;
+    overflow: visible;
+    pointer-events: none;
+    --wf-cm: var(--wf-title);
+}
+.wf-cm-line { fill: none; stroke: var(--wf-cm); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.wf-cm-thin { fill: none; stroke: var(--wf-cm); stroke-width: 0.9; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0.85; }
+.wf-cm-dot,
+.wf-cm-fill { fill: var(--wf-cm); }
+
+/* cameo + Vampire themes: oval ring, crown lifted above the top flourish */
+.wf-style-vampire.wf-shape-cameo { --wf-ring-r: 50%; }
+.wf-shape-cameo .wf-v-crown { top: calc(-19.5% - var(--wf-s) * 24px); }
+.wf-style-vampire.wf-shape-cameo .wf-row { padding-top: calc(var(--wf-s) * 44px); }
+
+/* =====================================================================
+   REGENCY STYLE  (Regency Cameo theme)
+   Quiet and elegant: serif title, a scroll flourish, italic subtitle,
+   serif names. No crowns or rings; pairs with the Cameo shape.
+   ===================================================================== */
+.wf-style-regency {
+    --wf-serif: 'Cormorant Garamond', 'Cormorant', Garamond, 'Times New Roman', serif;
+    margin-bottom: 20px;
+}
+.wf-style-regency .wf-r-title-block { margin: 0 0 2px; text-shadow: none; white-space: normal; }
+.wf-r-title {
+    font-family: var(--wf-serif);
+    font-weight: 500;
+    font-size: calc(var(--mainFontSize, 16px) * 2.5);
+    line-height: 1.05;
+    color: var(--wf-title);
+    -webkit-text-fill-color: currentColor;
+    background: none;
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--wf-accent) 30%, transparent));
+}
+.wf-r-divider { display: inline-block; margin-top: 2px; line-height: 0; }
+.wf-r-flourish {
+    width: calc(var(--mainFontSize, 16px) * 7);
+    height: auto;
+    overflow: visible;
+    --wf-cm: var(--wf-title);
+}
+.wf-r-subtitle {
+    margin-top: 4px;
+    font-family: var(--wf-serif);
+    font-style: italic;
+    font-size: calc(var(--mainFontSize, 16px) * 0.95);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--wf-text);
+    opacity: 0.8;
+}
+.wf-style-regency .wf-name { font-family: var(--wf-serif); font-size: 1.05em; font-weight: 500; }
+.wf-style-regency .wf-info {
+    font-family: var(--wf-serif);
+    font-size: 0.72em;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.wf-style-regency .wf-arrow {
+    background: color-mix(in srgb, #000 40%, transparent);
+    border-color: color-mix(in srgb, var(--wf-title) 45%, transparent);
+    color: var(--wf-title);
+}
+
+/* ---- Regency title: rose on each side ---- */
+.wf-r-title-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+}
+.wf-r-rose-wrap {
+    display: inline-flex;
+    line-height: 0;
+    flex: 0 0 auto;
+}
+.wf-r-rose-right { transform: scaleX(-1); }
+.wf-r-rose {
+    width: calc(var(--mainFontSize, 16px) * 4.2);
+    height: auto;
+    overflow: visible;
+    --wf-rose: var(--wf-theme-rose, color-mix(in srgb, var(--wf-accent2) 35%, #d8a1ab));
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--wf-rose) 40%, transparent));
+}
+.wf-rs-stem { fill: none; stroke: var(--wf-title); stroke-width: 1.2; stroke-linecap: round; }
+.wf-rs-leaf { fill: color-mix(in srgb, var(--wf-title) 30%, transparent); stroke: var(--wf-title); stroke-width: 0.9; stroke-linejoin: round; }
+.wf-rs-vein,
+.wf-rs-thorn { fill: none; stroke: var(--wf-title); stroke-width: 0.6; stroke-linecap: round; opacity: 0.8; }
+.wf-rs-sepal { fill: none; stroke: var(--wf-title); stroke-width: 0.9; stroke-linecap: round; }
+.wf-rs-back { fill: color-mix(in srgb, var(--wf-rose) 70%, #000); stroke: var(--wf-title); stroke-width: 0.8; stroke-linejoin: round; }
+.wf-rs-bud { fill: color-mix(in srgb, var(--wf-rose) 75%, #fff); stroke: var(--wf-title); stroke-width: 0.7; }
+.wf-rs-petal { fill: var(--wf-rose); stroke: var(--wf-title); stroke-width: 0.8; stroke-linejoin: round; }
+.wf-rs-front { fill: color-mix(in srgb, var(--wf-rose) 85%, #fff); stroke: var(--wf-title); stroke-width: 0.8; stroke-linejoin: round; }
+.wf-rs-curl { fill: none; stroke: var(--wf-title); stroke-width: 0.7; stroke-linecap: round; opacity: 0.9; }
+@media (max-width: 600px) {
+    .wf-r-rose { width: calc(var(--mainFontSize, 16px) * 3.2); }
+}
+
+/* ---- Cameo: more room above and below so the frame ornaments, hover zoom
+   and heartbeat glow are never cut off by the scrolling row ---- */
+.wf-shape-cameo .wf-row {
+    padding-top: calc(var(--wf-s) * 26px);
+    padding-bottom: 16px;
 }

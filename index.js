@@ -9,6 +9,7 @@
         ['square', 'Rounded square'],
         ['circle', 'Circle'],
         ['hexagon', 'Hexagon'],
+        ['cameo', 'Cameo'],
     ];
 
     // Settings panel layout + defaults. Every setting is a dropdown.
@@ -375,6 +376,7 @@
         ring.className = 'wf-ring';
         ring.append(makeMedia(item));
         frame.append(ring);
+        if (settings.shape === 'cameo') frame.insertAdjacentHTML('beforeend', CAMEO_SVG);
         if (style === 'vampire' || style === 'blood') frame.insertAdjacentHTML('beforeend', crownStyle === 'solid' ? solidCrownSvg() : CROWN_SVG);
         if (item.type === 'group') {
             const badge = document.createElement('span');
@@ -450,6 +452,7 @@
         ['classic', 'Classic'],
         ['vampire', 'Vampire'],
         ['blood', 'Blood Vampire'],
+        ['regency', 'Regency'],
     ];
 
     const el = (tag, cls, text) => {
@@ -461,13 +464,29 @@
 
     function makeTitle(style, theme) {
         const title = el('div', 'wf-title');
+        if (style === 'regency') {
+            const text = { ...REGENCY_TEXT, ...(theme?.texts || {}) };
+            title.classList.add('wf-v-title-block', 'wf-r-title-block');
+            const line = el('div', 'wf-r-title-line');
+            const left = el('span', 'wf-r-rose-wrap');
+            left.innerHTML = ROSE_SVG;
+            const right = el('span', 'wf-r-rose-wrap wf-r-rose-right');
+            right.innerHTML = ROSE_SVG;
+            line.append(left, el('div', 'wf-v-title wf-r-title', text.title || 'Favorites'), right);
+            title.append(line);
+            const fl = el('div', 'wf-r-divider');
+            fl.innerHTML = REGENCY_FLOURISH;
+            title.append(fl);
+            if (String(text.subtitle || '').trim()) title.append(el('div', 'wf-r-subtitle', text.subtitle));
+            return title;
+        }
         if (style === 'blood') {
             // "Favorites", a thin line with a star (the star beats with Heartbeat on), then a spaced-out subtitle
             const text = { ...BLOOD_TEXT, ...(theme?.texts || {}) };
             const line = el('div', 'wf-v-divider wf-b-divider');
             line.append(el('span', 'wf-title-heart wf-b-star', '\u2726'));
             title.classList.add('wf-v-title-block');
-            title.append(el('div', 'wf-v-title', 'Favorites'), line);
+            title.append(el('div', 'wf-v-title', text.title || 'Favorites'), line);
             if (String(text.subtitle || '').trim()) title.append(el('div', 'wf-b-subtitle', text.subtitle));
             return title;
         }
@@ -478,7 +497,8 @@
             const bottom = el('div', 'wf-v-divider wf-v-divider-bottom');
             bottom.append(el('span', 'wf-v-gem', '\u2726'), el('span', 'wf-title-heart wf-v-heart', '\u2665\uFE0E'), el('span', 'wf-v-gem', '\u2726'));
             title.classList.add('wf-v-title-block');
-            title.append(top, el('div', 'wf-v-title', 'Favorites'), bottom);
+            const vtext = { ...VAMPIRE_TEXT, ...(theme?.texts || {}) };
+            title.append(top, el('div', 'wf-v-title', vtext.title || 'Favorites'), bottom);
             return title;
         }
         // ｡ ₊°༺Favorite ❤︎༻°₊ ｡  (written with escapes so it survives any file encoding)
@@ -560,6 +580,15 @@
         </svg>`;
     };
 
+    // Cameo frame: double oval line, scrolled flourishes top and bottom, corner scrolls and side beads.
+    const CAMEO_SVG = `<svg class="wf-cameo-frame" viewBox="0 0 120 164" preserveAspectRatio="none" aria-hidden="true"><ellipse class="wf-cm-line" cx="60" cy="82" rx="47.5" ry="61.5"/><ellipse class="wf-cm-thin" cx="60" cy="82" rx="52.5" ry="67"/><g class="wf-cm-orn"><g transform=""><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/><path class="wf-cm-line" d="M19.5 41 C13.5 41 10.5 34.5 14.5 31 C17.5 28.5 21.5 31.5 19.8 34.2 C18.8 35.8 16.6 35 16.9 33.4"/><path class="wf-cm-thin" d="M21.5 42.5 C24.5 38.5 27.5 36 31.5 34.5"/><circle class="wf-cm-dot" cx="7.5" cy="58" r="1.6"/><circle class="wf-cm-dot" cx="6.2" cy="66" r="1.1"/></g><g transform="matrix(-1 0 0 1 120 0)"><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/><path class="wf-cm-line" d="M19.5 41 C13.5 41 10.5 34.5 14.5 31 C17.5 28.5 21.5 31.5 19.8 34.2 C18.8 35.8 16.6 35 16.9 33.4"/><path class="wf-cm-thin" d="M21.5 42.5 C24.5 38.5 27.5 36 31.5 34.5"/><circle class="wf-cm-dot" cx="7.5" cy="58" r="1.6"/><circle class="wf-cm-dot" cx="6.2" cy="66" r="1.1"/></g><g transform="matrix(1 0 0 -1 0 164)"><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/><path class="wf-cm-line" d="M19.5 41 C13.5 41 10.5 34.5 14.5 31 C17.5 28.5 21.5 31.5 19.8 34.2 C18.8 35.8 16.6 35 16.9 33.4"/><path class="wf-cm-thin" d="M21.5 42.5 C24.5 38.5 27.5 36 31.5 34.5"/><circle class="wf-cm-dot" cx="7.5" cy="58" r="1.6"/><circle class="wf-cm-dot" cx="6.2" cy="66" r="1.1"/></g><g transform="matrix(-1 0 0 -1 120 164)"><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/><path class="wf-cm-line" d="M19.5 41 C13.5 41 10.5 34.5 14.5 31 C17.5 28.5 21.5 31.5 19.8 34.2 C18.8 35.8 16.6 35 16.9 33.4"/><path class="wf-cm-thin" d="M21.5 42.5 C24.5 38.5 27.5 36 31.5 34.5"/><circle class="wf-cm-dot" cx="7.5" cy="58" r="1.6"/><circle class="wf-cm-dot" cx="6.2" cy="66" r="1.1"/></g></g><path class="wf-cm-fill" d="M60 2.5 C62.5 5 63 8 60 11.5 C57 8 57.5 5 60 2.5 Z"/><path class="wf-cm-line" d="M60 12.5 C56 12.5 53.5 9.5 55 7.5 M60 12.5 C64 12.5 66.5 9.5 65 7.5"/><circle class="wf-cm-dot" cx="60" cy="16" r="1.5"/><path class="wf-cm-fill" d="M60 161.5 C62.5 159 63 156 60 152.5 C57 156 57.5 159 60 161.5 Z"/><path class="wf-cm-line" d="M60 151.5 C56 151.5 53.5 154.5 55 156.5 M60 151.5 C64 151.5 66.5 154.5 65 156.5"/><circle class="wf-cm-dot" cx="60" cy="148" r="1.5"/></svg>`;
+
+    // Rose with stem and leaves, used on both sides of the Regency title (the right one is mirrored).
+    const ROSE_SVG = `<svg class="wf-r-rose" viewBox="0 0 64 40" aria-hidden="true"><path class="wf-rs-stem" d="M49 23 C42 27.5 30 30 16 31 C10 31.5 5.5 33.5 2 36.5"/><path class="wf-rs-leaf" d="M30 29.6 C27 23.5 20.5 22 16 24.5 C20 28.5 25.5 30.6 30 29.6 Z"/><path class="wf-rs-vein" d="M29 29.2 C24 26.6 20 25.6 17 25.2"/><path class="wf-rs-leaf" d="M18 31 C15 35.8 9.5 37.3 5.5 35.8 C8.5 32.3 13.5 30.5 18 31 Z"/><path class="wf-rs-thorn" d="M38 27.6 L36.8 24.8 M24 30.4 L23.6 33.2"/><path class="wf-rs-sepal" d="M50 22.5 C46 23.5 43 22.5 41.5 20.5 M51.5 22.5 C50.5 25.5 48 27 45 27.2 M52 22 C55 23.5 57.5 23 59 21.5"/><path class="wf-rs-back" d="M40 12 C40 5 46 2 51 3.5 C56 2 62 5 61 12 C60.5 15 58 17 55 17.5 L45 17.5 C42 17 40 15 40 12 Z"/><path class="wf-rs-bud" d="M45.5 9.5 C46 6 49 5 51 6.5 C53 5 56.5 6.5 56 9.5 C55.5 12 53 13 51 12.5 C48.5 13 46 12 45.5 9.5 Z"/><path class="wf-rs-curl" d="M48 8.6 C49.5 7.4 52.5 7.4 53.6 9.2 M49.5 10.6 C50.5 11.2 52 11.1 52.8 10.3"/><path class="wf-rs-petal" d="M40.5 11 C40 17 43.5 21.5 49 22 C46 19.5 45 16 46.5 12.5 C44.5 13.5 42.5 13 40.5 11 Z"/><path class="wf-rs-petal" d="M61 11 C61.5 17 57.5 21.5 51.5 22 C55 19.5 56 16 54.5 12.5 C56.5 13.5 58.5 13 61 11 Z"/><path class="wf-rs-front" d="M45.5 13 C46 18.5 48.5 21.6 51 21.9 C53.5 21.6 56 18.5 56 13 C54 14.8 52.5 15.3 51 15 C49 15.3 47.5 14.8 45.5 13 Z"/></svg>`;
+
+    // Scroll flourish under the Regency title: the cameo frame's top ornament, drawn on its own (nothing cropped).
+    const REGENCY_FLOURISH = `<svg class="wf-r-flourish" viewBox="20 0 80 30" aria-hidden="true"><g><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/></g><g transform="matrix(-1 0 0 1 120 0)"><path class="wf-cm-line" d="M60 16 C63 10.5 70 9.5 73 13.5 C75.5 17 71.5 20.5 68.8 18.4 C67 17 68.2 14.6 70 15.2"/><path class="wf-cm-line" d="M64.5 18.5 C72 20.5 79 14.5 85.5 17 C91.5 19.5 90.5 27 85.5 26.5 C82.5 26.2 82.2 22.4 84.8 22.1"/><path class="wf-cm-thin" d="M86.5 18 C90 15.5 94.5 17 95.5 20.5"/></g><path class="wf-cm-fill" d="M60 2.5 C62.5 5 63 8 60 11.5 C57 8 57.5 5 60 2.5 Z"/><path class="wf-cm-line" d="M60 12.5 C56 12.5 53.5 9.5 55 7.5 M60 12.5 C64 12.5 66.5 9.5 65 7.5"/><circle class="wf-cm-dot" cx="60" cy="16" r="1.5"/></svg>`;
+
     const VAMPIRE_TEXT = {
         left: 'Same|Beautiful|Chaos',
         right: 'danger|looks better|here \u2661',
@@ -594,7 +623,11 @@
         bottomLeft: 'Less people|Deeper connections',
         bottomRight: 'Favorites|Stay different',
     };
-    const TEXT_KEYS = [...new Set([...Object.keys(VAMPIRE_TEXT), ...Object.keys(BLOOD_TEXT)])];
+    const REGENCY_TEXT = {
+        title: 'Favorites',
+        subtitle: 'The most eligible of the season',
+    };
+    const TEXT_KEYS = [...new Set(['title', ...Object.keys(VAMPIRE_TEXT), ...Object.keys(BLOOD_TEXT), ...Object.keys(REGENCY_TEXT)])];
 
     function addBloodDecor(wrap, theme) {
         const text = { ...BLOOD_TEXT, ...(theme?.texts || {}) };
@@ -771,7 +804,7 @@
             colors: { accent: '#b77cf0', accent2: '#f07ac4', title: '#ecdcff', text: '#f1e6f7', border: '#6e4c80' },
         },
     ];
-    const COLOR_KEYS = ['accent', 'accent2', 'title', 'text', 'border', 'crown', 'script', 'ring'];
+    const COLOR_KEYS = ['accent', 'accent2', 'title', 'text', 'border', 'crown', 'script', 'ring', 'rose'];
     const OLD_THEME_IDS = { 'p:vampire': 'pink-vampire', 'blood-vampire': 'dark-blood-vampire' }; // ids used by earlier versions
 
     let THEMES = FALLBACK_THEMES;
@@ -793,6 +826,7 @@
             name: String(t.name),
             style: STYLES.some(([k]) => k === t.style) ? t.style : 'classic',
             crownStyle: typeof t.crownStyle === 'string' ? t.crownStyle : undefined,
+            shape: SHAPES.some(([k]) => k === t.shape) ? t.shape : undefined,
             colors,
             texts,
         };
@@ -916,6 +950,13 @@
         loadThemes().then(fillThemes);
         themeSel.addEventListener('change', () => {
             settings.theme = themeSel.value;
+            // a theme can come with a suggested Icon shape; it's set once here and can be changed afterwards
+            const suggested = activeTheme(settings)?.shape;
+            if (suggested) {
+                settings.shape = suggested;
+                const shapeSel = panel.querySelector('#wf_shape');
+                if (shapeSel) shapeSel.value = suggested;
+            }
             saveSettings();
             refreshTheme();
         });
